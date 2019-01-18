@@ -16,8 +16,8 @@ class CommentsController extends Controller
      */
     public function index()
     {
-        $blogs = Comment::orderBy('id', 'DESC')->paginate(2);
-        return view('show', compact('blogs'));
+        // $blogs = Comment::orderBy('id', 'DESC')->paginate(2);
+        // return view('show', compact('blogs'));
     }
 
     /**
@@ -33,16 +33,17 @@ class CommentsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store($id)
     {
-
-        request()->validate([
-            'Name' => ['required','min:5','max:50'],
-            'Comment'=>['required','min:','max:200']
-            
+        request()->validate
+        ([
+            'Name' => 
+            ['required','min:5','max:50'],
+            'Comment'=>
+            ['required','min:','max:200']    
         ]);
         $comment=new Comment();
         $comment->Blog_id=$id;
@@ -51,42 +52,34 @@ class CommentsController extends Controller
         $comment->Email=request('Email');
         $comment->save();
         return back();
-        // return $comment->all();
-        
-        //  $comment=new Comment();
-        //  
-        // $comment->Name=request('Name');
-        //
-        // $comment->Email=request('Email');
-        // $comment->save();
-        // return redirect('/blogs/{blog}');
+       
     }
 
     /**
      * Display the specified resource.
      *
-     * 
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         
         $blogs=Blog::findorFail($id);
-        
-        // echo"<pre>";
-        // print_r($blogs->comments);
-        $comments = Comment::where('Blog_id', $id)->orderBy('id', 'DESC')->paginate(2);
-        
-        //$blogs->comments= $comments;
        
-        return view('show', compact('blogs','comments'));
+        
+        // $comments = Comment::where('Blog_id', $id)->orderBy('id', 'DESC')->paginate(2);
+        // return view('show', compact('comments'), compact('blogs'));
+
+
+         $comments = Comment::where('Blog_id', $id)->orderBy('id', 'DESC')->paginate(5);
+       
+         return view('show', compact('comments', 'blogs'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -97,8 +90,9 @@ class CommentsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param 
+     * int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -109,11 +103,18 @@ class CommentsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //
     }
+
+    // public function showAllComments()
+    // {
+    //     $comments = Comment::orderBy('id', 'DESC')->paginate(2);
+       
+    //     return view('show', compact('comments'));
+    // }
 }
